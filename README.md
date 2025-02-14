@@ -12,5 +12,6 @@
 
 ...
 
-*Bugs and issues*
-- [] `double free or corruption (!prev)`
+**Bugs and issues**
+- [ ] `double free or corruption (!prev)`
+- [ ] some warnings during compilation
