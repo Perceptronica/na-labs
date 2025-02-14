@@ -1,22 +1,30 @@
-#include "matrix.h"
+#include "../lib/matrix.h"
 #include <stdexcept>
-
-Matrix::Matrix() {
-  rows = 0;
-  cols = 0;
-}
 
 Matrix::Matrix(std::size_t r, std::size_t c) {
   if (r > 0 && c > 0) {
     rows = r;
     cols = c;
-    data.resize(r, std::vector<double>(c, 0.0));
+    data.resize(r, std::vector<long double>(c, 0.0));
   } else {
     throw std::invalid_argument("matrix must have at least one element");
   }
 }
 
-Matrix::Matrix(std::vector<std::vector<double>> &v) {
+Matrix::Matrix(std::vector<long double> &v) {
+  if (v.size() > 0) {
+    rows = v.size();
+    cols = 1;
+    data.resize(rows, std::vector<long double>(cols, 0.0));
+    for (size_t i = 0; i < rows; ++i) {
+      data[i][0] = v[i];
+    }
+  } else {
+    throw std::invalid_argument("matrix cannot be empty");
+  }
+}
+
+Matrix::Matrix(std::vector<std::vector<long double>> &v) {
   if (v.size() > 0) {
     rows = v.size();
     for (size_t i = 1; i < rows; ++i) {
@@ -171,7 +179,7 @@ uint32_t Matrix::rank() const {
 }
 
 void Matrix::inverse() {
-    // TODO: IMPLEMENT!
+  // TODO: IMPLEMENT!
 }
 
 void print(const Matrix &m) {
@@ -185,4 +193,33 @@ void print(const Matrix &m) {
       std::cout << '\n';
     }
   }
+}
+
+std::istream &operator>>(std::istream &is, Matrix &mat) {
+  std::cout << "enter <rows> <columns>: ";
+  std::size_t r, c;
+  is >> r >> c;
+  if (r == 0 || c == 0) {
+    std::cout << "invalid dimensions" << std::endl;
+    return is;
+  }
+  mat.rows = r;
+  mat.cols = c;
+  mat.data.resize(r, std::vector<long double>(c));
+  for (std::size_t i = 0; i < mat.rows; ++i) {
+    for (std::size_t j = 0; j < mat.cols; ++j) {
+      is >> mat.data[i][j];
+    }
+  }
+  return is;
+}
+
+std::ostream &operator<<(std::ostream &os, const Matrix &mat) {
+  for (std::size_t i = 0; i < mat.rows; ++i) {
+    for (std::size_t j = 0; j < mat.cols; ++j) {
+      os << mat.data[i][j] << '\t';
+    }
+    os << '\n';
+  }
+  return os;
 }
