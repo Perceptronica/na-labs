@@ -1,9 +1,9 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++17 -O2
 TARGET = calc
-SRCS = main.cpp matrix.cpp
+SRCS = main.cpp src/linalg.cpp src/matrix.cpp
 OBJS = $(SRCS:.cpp=.o)
-HEADERS = matrix.h
+HEADERS = lib/linalg.h lib/matrix.h
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
