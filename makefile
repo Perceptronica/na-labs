@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++17 -O2
-TARGET = matrix_program
+TARGET = calc
 SRCS = main.cpp matrix.cpp
 OBJS = $(SRCS:.cpp=.o)
 HEADERS = matrix.h

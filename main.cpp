@@ -1,8 +1,11 @@
 #include "matrix.h"
 
 int main() {
-    std::vector<std::vector<double>> v = {{1.0, -1.52}, {0.0, 1.0}};
+    std::vector<std::vector<double>> v = {{1, 2, 3}, {4, 3, 6}, {7, 8, 9}};
     Matrix a(v);
-    Matrix b = a + a + a;
-    print(b);
+    double det = a.determinant();
+    uint32_t rank = a.rank();
+    a.transpose();
+    std::cout << det << ' ' << rank << std::endl;
+    print(a);
 }

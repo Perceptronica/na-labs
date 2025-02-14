@@ -18,7 +18,14 @@ struct Matrix {
   Matrix operator-(const Matrix& rhs) const;
   Matrix operator*(const double& t) const;
   Matrix operator*(const Matrix& rhs) const;
-  //Matrix operator=(const Matrix& rhs) const;
+  Matrix operator=(const Matrix& rhs);
+  bool operator==(const Matrix& rhs) const;
+  bool operator!=(const Matrix& rhs) const;
+
+  double determinant() const;
+  void transpose();
+  uint32_t rank() const;
+  void inverse();
 };
 
 void print(const Matrix& m);
