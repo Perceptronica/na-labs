@@ -11,17 +11,17 @@ int main() {
     if (command == "lu") {
       std::cout << "LU decomposition | Solution to Ax = b" << std::endl;
       Matrix A;
-      std::cout << "A: ";
+      std::cout << "\033[32minput A:\033[0m ";
       std::cin >> A;
-      std::vector<long double> b(A.rows);
-      std::cout << "b: ";
-      for (std::size_t i = 0; i < A.rows; ++i) {
-        std::cin >> b[i];
-      }
-      Matrix x = solveLS(A, b);
+      Matrix b(A.rows, 1);
+      std::cout << "\033[32minput B:\033[0m ";
+      std::cin >> b;
+      Matrix x = solveLU(A, b);
       x.transpose();
-      std::cout << "\033[34mx:\n" << x << "\033[0m";
-      std::cout << "det(A) = " << A.determinant() << std::endl;
+      std::cout << "\033[32mX = " << x << "^T" << std::endl;
+      std::cout << "det(A) = " << A.determinant() << "\033[0m"<< std::endl;
+      //A.inverse();
+      //std::cout << "A^(-1) = \n" << A << std::endl;
     } else if (command == "exit") {
       exit = true;
     }

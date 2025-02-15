@@ -39,6 +39,16 @@ Matrix::Matrix(std::vector<std::vector<long double>> &v) {
   }
 }
 
+Matrix::Matrix(const Matrix &other) {
+  rows = other.rows;
+  cols = other.cols;
+  data = other.data;
+}
+
+Matrix::Matrix(Matrix &&other) noexcept
+    : rows(std::exchange(other.rows, 0)), cols(std::exchange(other.cols, 0)),
+      data(std::move(other.data)) {}
+
 Matrix Matrix::operator+(const Matrix &rhs) const {
   if (rows != rhs.rows || cols != rhs.cols) {
     throw std::invalid_argument(
@@ -93,16 +103,11 @@ Matrix Matrix::operator*(const Matrix &rhs) const {
   return res;
 }
 
-Matrix Matrix::operator=(const Matrix &rhs) {
-  if (this == &rhs) {
-    return *this;
-  }
-  rows = rhs.rows;
-  cols = rhs.cols;
-  for (std::size_t i = 0; i < rows; ++i) {
-    for (std::size_t j = 0; j < cols; ++j) {
-      data[i][j] = rhs.data[i][j];
-    }
+Matrix &Matrix::operator=(const Matrix &other) {
+  if (this != &other) {
+    rows = other.rows;
+    cols = other.cols;
+    data = other.data;
   }
   return *this;
 }
@@ -179,9 +184,19 @@ uint32_t Matrix::rank() const {
 }
 
 void Matrix::inverse() {
-  // TODO: IMPLEMENT!
+  if (rows != cols) {
+    std::cout << "matrix is not square" << std::endl;
+    return;
+  }
+  double det = determinant();
+  if (det == 0) {
+    std::cout << "matrix is singular" << std::endl;
+    return;
+  }
 }
 
+// print() is deprecated
+/*
 void print(const Matrix &m) {
   if (m.rows == 0 || m.cols == 0) {
     std::cout << "empty matrix" << std::endl;
@@ -194,18 +209,21 @@ void print(const Matrix &m) {
     }
   }
 }
+*/
 
 std::istream &operator>>(std::istream &is, Matrix &mat) {
-  std::cout << "enter <rows> <columns>: ";
-  std::size_t r, c;
-  is >> r >> c;
-  if (r == 0 || c == 0) {
-    std::cout << "invalid dimensions" << std::endl;
-    return is;
+  if (mat.rows == 0 && mat.cols == 0) {
+    std::cout << "enter <rows> <columns>: ";
+    std::size_t r, c;
+    is >> r >> c;
+    if (r == 0 || c == 0) {
+      std::cout << "invalid dimensions" << std::endl;
+      return is;
+    }
+    mat.rows = r;
+    mat.cols = c;
+    mat.data.resize(r, std::vector<long double>(c));
   }
-  mat.rows = r;
-  mat.cols = c;
-  mat.data.resize(r, std::vector<long double>(c));
   for (std::size_t i = 0; i < mat.rows; ++i) {
     for (std::size_t j = 0; j < mat.cols; ++j) {
       is >> mat.data[i][j];
@@ -215,11 +233,20 @@ std::istream &operator>>(std::istream &is, Matrix &mat) {
 }
 
 std::ostream &operator<<(std::ostream &os, const Matrix &mat) {
+  os << "[";
   for (std::size_t i = 0; i < mat.rows; ++i) {
+    os << "[";
     for (std::size_t j = 0; j < mat.cols; ++j) {
-      os << mat.data[i][j] << '\t';
+      os << mat.data[i][j];
+      if (j != mat.cols - 1) {
+        os << '\t';
+      }
     }
-    os << '\n';
+    os << "]";
+    if (i != mat.rows - 1) {
+      os << '\n';
+    }
   }
+  os << "]";
   return os;
 }

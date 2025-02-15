@@ -1,7 +1,7 @@
 #include "../lib/linalg.h"
 #include "../lib/matrix.h"
 
-std::pair<Matrix, Matrix> LUDecomposition(Matrix &A) {
+std::pair<Matrix, Matrix> LUDecomposition(const Matrix &A) {
   if (A.rows != A.cols) {
     throw std::invalid_argument("Matrix must be square");
   }
@@ -31,38 +31,37 @@ std::pair<Matrix, Matrix> LUDecomposition(Matrix &A) {
   return std::make_pair(L, U);
 }
 
-std::vector<long double> forwardSubstitution(const Matrix &L,
-                                             const std::vector<long double> &b) {
+Matrix forwardSubstitution(const Matrix &L, const Matrix &b) {
   std::vector<long double> x(L.rows, 0.0);
   for (std::size_t i = 0; i < L.rows; ++i) {
     long double sum = 0.0;
     for (std::size_t j = 0; j < i; ++j) {
       sum += L.data[i][j] * x[j];
     }
-    x[i] = (b[i] - sum) / L.data[i][i];
+    x[i] = (b.data[i][0] - sum) / L.data[i][i];
   }
-  return x;
+  return Matrix(x);
 }
 
-std::vector<long double> backwardSubstitution(const Matrix &U,
-                                         const std::vector<long double> &y) {
+Matrix backwardSubstitution(const Matrix &U, const Matrix &y) {
   std::vector<long double> x(U.rows, 0.0);
   for (std::size_t i = U.rows - 1; i != std::string::npos; --i) {
     long double sum = 0.0;
     for (std::size_t j = i + 1; j < U.rows; ++j) {
       sum += U.data[i][j] * x[j];
     }
-    x[i] = (y[i] - sum) / U.data[i][i];
+    x[i] = (y.data[i][0] - sum) / U.data[i][i];
   }
-  return x;
+  return Matrix(x);
 }
 
-Matrix solveLS(Matrix &A, const std::vector<long double> &b) {
-    if (A.rows != A.cols || A.rows != b.size()) {
-        throw std::invalid_argument("Matrix must be square and have the same number of rows as the vector");
-    }
-    auto [L, U] = LUDecomposition(A);
-    std::vector<long double> y = forwardSubstitution(L, b);
-    std::vector<long double> x = backwardSubstitution(U, y);
-    return Matrix(x);
+Matrix solveLU(const Matrix &A, const Matrix &b) {
+  if (A.rows != A.cols || A.rows != b.rows) {
+    throw std::invalid_argument(
+        "Matrix must be square and have the same number of rows as the vector");
+  }
+  auto [L, U] = LUDecomposition(A);
+  Matrix y = forwardSubstitution(L, b);
+  Matrix x = backwardSubstitution(U, y);
+  return x;
 }

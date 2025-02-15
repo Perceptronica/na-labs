@@ -14,12 +14,16 @@ struct Matrix {
   Matrix(std::size_t r, std::size_t c);
   Matrix(std::vector<long double>& v); // for vectors/rows
   Matrix(std::vector<std::vector<long double>>& v);
+  Matrix(const Matrix& other);
+  Matrix(Matrix &&other) noexcept;
+
+  ~Matrix() = default;
 
   Matrix operator+(const Matrix& rhs) const;
   Matrix operator-(const Matrix& rhs) const;
   Matrix operator*(const double& t) const;
   Matrix operator*(const Matrix& rhs) const;
-  Matrix operator=(const Matrix& rhs);
+  Matrix& operator=(const Matrix &other);
   bool operator==(const Matrix& rhs) const;
   bool operator!=(const Matrix& rhs) const;
 

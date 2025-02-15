@@ -4,6 +4,20 @@
 
 Решение систем линейных уравнений и нахождение собственных значений матриц
 - [x] LU-разложение
+
+```
+> lu
+LU decomposition | Solution to Ax = b
+input A: enter <rows> <columns>: 4 4
+ 3      -8       1      -7
+ 6       4       8       5
+-1       1      -9      -3
+-6       6       9      -4
+input B: 96 -13 -54 82
+X = [[-3        -6      8       -7]]^T
+det(A) = 7315
+```
+
 - [ ] Метод прогонки
 - [ ] Метод простых итераций
 - [ ] Метод Зейделя
@@ -13,5 +27,5 @@
 ...
 
 **Bugs and issues**
-- [ ] `double free or corruption (!prev)`
-- [ ] some warnings during compilation
+- [x] ~~`double free or corruption (!prev)`~~ (15/02/25)
+- [x] ~~some initial warnings during compilation~~ (15/02/25)
