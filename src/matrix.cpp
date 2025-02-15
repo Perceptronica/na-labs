@@ -183,18 +183,6 @@ uint32_t Matrix::rank() const {
   return rank;
 }
 
-void Matrix::inverse() {
-  if (rows != cols) {
-    std::cout << "matrix is not square" << std::endl;
-    return;
-  }
-  double det = determinant();
-  if (det == 0) {
-    std::cout << "matrix is singular" << std::endl;
-    return;
-  }
-}
-
 // print() is deprecated
 /*
 void print(const Matrix &m) {
@@ -235,6 +223,9 @@ std::istream &operator>>(std::istream &is, Matrix &mat) {
 std::ostream &operator<<(std::ostream &os, const Matrix &mat) {
   os << "[";
   for (std::size_t i = 0; i < mat.rows; ++i) {
+    if (i > 0) {
+      os << ' ';
+    }
     os << "[";
     for (std::size_t j = 0; j < mat.cols; ++j) {
       os << mat.data[i][j];
@@ -249,4 +240,72 @@ std::ostream &operator<<(std::ostream &os, const Matrix &mat) {
   }
   os << "]";
   return os;
+}
+
+Matrix Matrix::getMinor(std::size_t row, std::size_t col) const {
+  if (rows != cols) {
+    std::cout << "matrix is not square" << std::endl;
+    return Matrix();
+  }
+  Matrix minor(rows - 1, cols - 1);
+  for (std::size_t i = 0; i < rows; ++i) {
+    if (i == row) {
+      continue;
+    }
+    for (std::size_t j = 0; j < cols; ++j) {
+      if (j == col) {
+        continue;
+      }
+      minor.data[i - (i > row)][j - (j > col)] = data[i][j];
+    }
+  }
+  return minor;
+}
+
+Matrix Matrix::cofactorMatrix() const {
+  if (rows != cols) {
+    std::cout << "matrix is not square" << std::endl;
+    return Matrix();
+  }
+  Matrix cof(rows, cols);
+  for (std::size_t i = 0; i < rows; ++i) {
+    for (std::size_t j = 0; j < cols; ++j) {
+      cof.data[i][j] = pow(-1, i + j) * getMinor(i, j).determinant();
+    }
+  }
+  return cof;
+}
+
+Matrix Matrix::adjugateMatrix() const {
+  if (rows != cols) {
+    std::cout << "matrix is not square" << std::endl;
+    return Matrix();
+  }
+  Matrix adj(rows, cols);
+  for (std::size_t i = 0; i < rows; ++i) {
+    for (std::size_t j = 0; j < cols; ++j) {
+      adj.data[j][i] = cofactorMatrix().data[i][j];
+    }
+  }
+  return adj;
+}
+
+Matrix Matrix::inverse() {
+  if (rows != cols) {
+    std::cout << "matrix is not square" << std::endl;
+    return Matrix();
+  }
+  Matrix inv(rows, cols);
+  long double det = determinant();
+  if (det == 0) {
+    std::cout << "matrix is singular" << std::endl;
+    return Matrix();
+  }
+  Matrix adj = adjugateMatrix();
+  for (std::size_t i = 0; i < rows; ++i) {
+    for (std::size_t j = 0; j < cols; ++j) {
+      inv.data[i][j] = adj.data[i][j] / det;
+    }
+  }
+  return inv;
 }

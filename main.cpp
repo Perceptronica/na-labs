@@ -18,10 +18,10 @@ int main() {
       std::cin >> b;
       Matrix x = solveLU(A, b);
       x.transpose();
-      std::cout << "\033[32mX = " << x << "^T" << std::endl;
-      std::cout << "det(A) = " << A.determinant() << "\033[0m"<< std::endl;
-      //A.inverse();
-      //std::cout << "A^(-1) = \n" << A << std::endl;
+      std::cout << "\033[33mX = " << x << "^T" << std::endl;
+      std::cout << "det(A) = " << A.determinant() << std::endl;
+      Matrix C = A.inverse();
+      std::cout << "A^(-1) = \n" << C << "\033[0m" << std::endl;
     } else if (command == "exit") {
       exit = true;
     }

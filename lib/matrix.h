@@ -1,5 +1,6 @@
 #pragma once
 #include <bits/stdc++.h>
+#include <iterator>
 #include <stdexcept>
 
 #ifndef _MATRIX_H_
@@ -33,7 +34,11 @@ struct Matrix {
   double determinant() const;
   void transpose();
   uint32_t rank() const;
-  void inverse();
+  Matrix inverse();
+
+  Matrix getMinor(std::size_t row, std::size_t col) const;
+  Matrix cofactorMatrix() const;
+  Matrix adjugateMatrix() const;
 };
 
 #endif
