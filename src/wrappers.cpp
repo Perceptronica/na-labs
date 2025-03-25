@@ -16,7 +16,9 @@ void LU() {
     std::cout << "A^(-1) = \n" << C << "\033[0m" << std::endl;
 }
 
-void LU(Matrix& A, Matrix& b) {
+void LU(std::pair<Matrix, Matrix> p) {
+    Matrix& A = p.first;
+    Matrix& b = p.second;
     if (b.cols != 1) {
         throw std::logic_error("b should be a vector");
     }

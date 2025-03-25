@@ -5,6 +5,6 @@
 #define WRAPPERS_H
 
 void LU();
-void LU(Matrix& A, Matrix& b);
+void LU(std::pair<Matrix, Matrix> p);
 
 #endif
