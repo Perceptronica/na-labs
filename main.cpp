@@ -1,5 +1,5 @@
-#include "lib/wrappers.h"
 #include "lib/readers.h"
+#include "lib/wrappers.h"
 
 int main(int argc, char *argv[]) {
   std::cout << "\033[32mNumerical Analysis labs\nby Anton Kabanov "
@@ -27,11 +27,11 @@ int main(int argc, char *argv[]) {
       file_path = tokens[1];
     }
 
-
     if (command == "lu") {
-      if (file_path.empty()) { LU(); }
-      else {
-          LU(read_SLE(std::ifstream(file_path)));
+      if (file_path.empty()) {
+        LU();
+      } else {
+        LU(read_SLE(std::ifstream(file_path)));
       }
     } else if (command == "exit") {
       exit = true;

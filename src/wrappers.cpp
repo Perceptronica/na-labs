@@ -22,9 +22,11 @@ void LU(std::pair<Matrix, Matrix> p) {
     if (b.cols != 1) {
         throw std::logic_error("b should be a vector");
     }
-    std::cout << A << b;
+    std::cout << A << std::endl;
+    std::cout << b << std::endl;
     Matrix x = solveLU(A, b);
     x.transpose();
     Matrix C = A.inverse();
-    std::cout << x << C;
+    std::cout << x << std::endl;
+    std::cout << C << std::endl;
 }
