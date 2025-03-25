@@ -39,6 +39,18 @@ int main() {
       } else {
         TDMA(read_SLE(std::ifstream(file_path)));
       }
+    } else if (command == "si") {
+      if (file_path.empty()) {
+        SI();
+      } else {
+        SI(read_SLE(std::ifstream(file_path)));
+      }
+    } else if (command == "seidel") {
+      if (file_path.empty()) {
+        SeidelW();
+      } else {
+        SeidelW(read_SLE(std::ifstream(file_path)));
+      }
     } else if (command == "exit") {
       exit = true;
     }

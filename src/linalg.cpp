@@ -66,8 +66,8 @@ Matrix solveLU(const Matrix &A, const Matrix &b) {
   return x;
 }
 
-std::vector<long double> createDiags(const Matrix &M, std::size_t x, std::size_t y,
-                                std::size_t n) {
+std::vector<long double> createDiags(const Matrix &M, std::size_t x,
+                                     std::size_t y, std::size_t n) {
   std::vector<long double> diag(n);
   for (std::size_t i = 0; i < n; ++i) {
     diag[i] = M.data[x][y];
@@ -110,4 +110,66 @@ Matrix solveTDMA(const Matrix &A, const Matrix &B) {
   }
   Matrix ans = Matrix(x);
   return ans;
+}
+
+std::pair<Matrix, int> simpleIterationImpl(const Matrix &A, const Matrix &B,
+                                           long double epsilon,
+                                           int maxIterations, long double tau) {
+  std::size_t n = A.rows;
+  std::vector<long double> x(n, 0.0);
+  std::vector<long double> x_prev(n);
+  std::size_t i = 0;
+  for (; i < maxIterations; ++i) {
+    x_prev = x;
+    for (std::size_t j = 0; j < n; ++j) {
+      double Ax = 0.0;
+      for (std::size_t k = 0; k < n; ++k) {
+        Ax += A.data[j][k] * x_prev[k];
+      }
+      x[j] = x_prev[j] - tau * Ax + tau * B.data[j][0];
+    }
+    double diff = 0.0;
+    for (std::size_t j = 0; j < n; ++j) {
+      diff += (x[j] - x_prev[j]) * (x[j] - x_prev[j]);
+    }
+    diff = sqrt(diff);
+    if (diff < epsilon) {
+      break;
+    }
+  }
+  return std::make_pair(Matrix(x), i);
+}
+
+long double vectorDiffNorm(std::vector<long double>& x, std::vector<long double>& y) {
+    long double norm = 0.0;
+    for (size_t i = 0; i < x.size(); ++i) {
+        norm += (x[i] - y[i]) * (x[i] - y[i]);
+    }
+    return std::sqrt(norm);
+}
+
+std::pair<Matrix, int> Seidel(const Matrix &A, const Matrix &b, long double eps, int maxIters) {
+  std::size_t n = A.rows;
+  std::vector<long double> x(n, 0.0);
+  std::vector<long double> x_prev(n);
+  int iter = 0;
+  for (; iter < maxIters; ++iter) {
+    x_prev = x;
+    for (size_t i = 0; i < n; ++i) {
+      double sum1 = 0.0;
+      for (size_t j = 0; j < i; ++j) {
+        sum1 += A.data[i][j] * x[j];
+      }
+      double sum2 = 0.0;
+      for (size_t j = i + 1; j < n; ++j) {
+        sum2 += A.data[i][j] * x_prev[j];
+      }
+      x[i] = (b.data[i][0] - sum1 - sum2) / A.data[i][i];
+    }
+
+    if (vectorDiffNorm(x, x_prev) < eps) {
+      break;
+    }
+  }
+  return std::make_pair(Matrix(x), iter);
 }

@@ -10,4 +10,10 @@ void LU(std::pair<Matrix, Matrix> p);
 void TDMA();
 void TDMA(std::pair<Matrix, Matrix> p);
 
+void SI();
+void SI(std::pair<Matrix, Matrix> p);
+
+void SeidelW();
+void SeidelW(std::pair<Matrix, Matrix> p);
+
 #endif
