@@ -1,7 +1,7 @@
 #include "lib/readers.h"
 #include "lib/wrappers.h"
 
-int main(int argc, char *argv[]) {
+int main() {
   std::cout << "\033[32mNumerical Analysis labs\nby Anton Kabanov "
                "(@Perceptronica)\033[0m"
             << std::endl;
@@ -32,6 +32,12 @@ int main(int argc, char *argv[]) {
         LU();
       } else {
         LU(read_SLE(std::ifstream(file_path)));
+      }
+    } else if (command == "td" || command == "tdma") {
+      if (file_path.empty()) {
+        TDMA();
+      } else {
+        TDMA(read_SLE(std::ifstream(file_path)));
       }
     } else if (command == "exit") {
       exit = true;

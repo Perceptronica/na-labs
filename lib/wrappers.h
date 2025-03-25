@@ -7,4 +7,7 @@
 void LU();
 void LU(std::pair<Matrix, Matrix> p);
 
+void TDMA();
+void TDMA(std::pair<Matrix, Matrix> p);
+
 #endif
