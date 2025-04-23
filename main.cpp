@@ -51,6 +51,22 @@ int main() {
       } else {
         SeidelW(read_SLE(std::ifstream(file_path)));
       }
+    } else if (command == "jacobi") {
+      if (file_path.empty()) {
+        Matrix S;
+        std::cin >> S;
+        long double e;
+        std::cout << "enter epsilon: ";
+        std::cin >> e;
+        Jacobi(S, e);
+      } else {
+        Matrix M = read_matrix(std::ifstream(file_path));
+        //std::cout << M;
+        long double e;
+        std::cout << "enter epsilon: ";
+        std::cin >> e;
+        Jacobi(M, e);
+      }
     } else if (command == "exit") {
       exit = true;
     }

@@ -61,30 +61,17 @@ void SI() {
     Matrix b(A.rows, 1);
     std::cout << "\033[32minput B:\033[0m ";
     std::cin >> b;
-    std::cout << "enter <eps iterations tau>: ";
-    long double e, t;
-    int i;
-    std::cin >> e >> i >> t;
-    auto [x, a] = simpleIterationImpl(A, b, e, i, t);
-    std::cout << "iterations: " << a << std::endl;
-    std::cout << x << std::endl;
+    std::cout << "enter epsilon: ";
+    long double e;
+    std::cin >> e;
+    simpleIterationImpl(A, b, e);
 }
 
 void SI(std::pair<Matrix, Matrix> p) {
-    Matrix& A = p.first;
-    Matrix& b = p.second;
-    if (b.cols != 1) {
-        throw std::logic_error("b should be a vector");
-    }
-    std::cout << A << std::endl;
-    std::cout << b << std::endl;
-    std::cout << "enter <eps iterations tau>: ";
-    long double e, t;
-    int i;
-    std::cin >> e >> i >> t;
-    auto [x, a] = simpleIterationImpl(A, b, e, i, t);
-    std::cout << "iterations: " << a << std::endl;
-    std::cout << x << std::endl;
+    std::cout << "enter epsilon: ";
+    long double e;
+    std::cin >> e;
+    simpleIterationImpl(p.first, p.second, e);
 }
 
 void SeidelW() {
@@ -94,13 +81,10 @@ void SeidelW() {
     Matrix b(A.rows, 1);
     std::cout << "\033[32minput B:\033[0m ";
     std::cin >> b;
-    std::cout << "enter <eps iterations>: ";
+    std::cout << "enter epsilon: ";
     long double e;
-    int i;
-    std::cin >> e >> i;
-    auto [x, a] = Seidel(A, b, e, i);
-    std::cout << "iterations: " << a << std::endl;
-    std::cout << x << std::endl;
+    std::cin >> e;
+    Seidel(A, b, e);
 }
 
 void SeidelW(std::pair<Matrix, Matrix> p) {
@@ -111,11 +95,8 @@ void SeidelW(std::pair<Matrix, Matrix> p) {
     }
     std::cout << A << std::endl;
     std::cout << b << std::endl;
-    std::cout << "enter <eps iterations>: ";
+    std::cout << "enter epsilon: ";
     long double e;
-    int i;
-    std::cin >> e >> i;
-    auto [x, a] = Seidel(A, b, e, i);
-    std::cout << "iterations: " << a << std::endl;
-    std::cout << x << std::endl;
+    std::cin >> e;
+    Seidel(A, b, e);
 }
