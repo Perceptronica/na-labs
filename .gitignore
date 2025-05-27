@@ -31,4 +31,8 @@
 *.out
 *.app
 
-calc
+jacobi
+iterations
+lu
+lu_dec
+triagonal
