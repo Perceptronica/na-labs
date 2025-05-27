@@ -1,18 +1,22 @@
 CXX = g++
-CXXFLAGS = -Wall -Wextra -std=c++17 -O2
-TARGET = calc
-SRCS = main.cpp src/linalg.cpp src/matrix.cpp src/wrappers.cpp src/readers.cpp
-OBJS = $(SRCS:.cpp=.o)
-HEADERS = lib/linalg.h lib/matrix.h lib/wrappers.h lib/readers.h
-all: $(TARGET)
+CXXFLAGS = -std=c++17 -Wall -Wextra
+INCLUDES = -I.
 
-$(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS)
+EXECUTABLES = lu_dec triagonal iterations jacobi
 
-%.o: %.cpp $(HEADERS)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+all: $(EXECUTABLES)
 
-clean:
-	rm -f $(OBJS) $(TARGET)
+lu: lu-dec.cpp matrix.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $^ -o $@
 
-.PHONY: all clean
+triagonal: triagonal.cpp matrix.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $^ -o $@
+
+iterations: iterations.cpp matrix.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $^ -o $@
+
+jacobi: jacobi.cpp matrix.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $^ -o $@
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@

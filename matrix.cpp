@@ -1,4 +1,4 @@
-#include "../lib/matrix.h"
+#include "matrix.h"
 #include <stdexcept>
 
 Matrix::Matrix(std::size_t r, std::size_t c) {
@@ -182,22 +182,6 @@ uint32_t Matrix::rank() const {
   }
   return rank;
 }
-
-// print() is deprecated
-/*
-void print(const Matrix &m) {
-  if (m.rows == 0 || m.cols == 0) {
-    std::cout << "empty matrix" << std::endl;
-  } else {
-    for (std::size_t i = 0; i < m.rows; ++i) {
-      for (std::size_t j = 0; j < m.cols; ++j) {
-        std::cout << m.data[i][j] << '\t';
-      }
-      std::cout << '\n';
-    }
-  }
-}
-*/
 
 std::istream &operator>>(std::istream &is, Matrix &mat) {
   if (mat.rows == 0 && mat.cols == 0) {
