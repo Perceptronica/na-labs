@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -std=c++17 -Wall -Wextra
 INCLUDES = -I.
 
-EXECUTABLES = lu_dec triagonal iterations jacobi
+EXECUTABLES = lu_dec triagonal iterations jacobi non-sys
 
 all: $(EXECUTABLES)
 
@@ -16,6 +16,9 @@ iterations: iterations.cpp matrix.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) $^ -o $@
 
 jacobi: jacobi.cpp matrix.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $^ -o $@
+
+non-sys: nonlinear-sys.cpp matrix.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) $^ -o $@
 
 %.o: %.cpp
